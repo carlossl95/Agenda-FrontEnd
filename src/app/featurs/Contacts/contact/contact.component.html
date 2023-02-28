@@ -1,0 +1,318 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-flex justify-content-center mt-4">
+            <div class="col-2">
+                <h2>Contatos:</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="d-flex justify-content-center mt-5 pl-5">
+            <div class="col-10">                
+
+                <div class="row pr-2 ">
+
+                    <div class="col-3 pl-5">
+                        <input type="text" class="form-control" id="dataSearch" [formControl]="searcheList"
+                        autocomplete="off">
+                    </div>
+
+                    <div class="col-8 ">
+                        <div class="row">
+                            <div class="col-2">
+                                <button type="button" class="btn btn-primary" (click)="SearchFilter()">
+                                    Pesquisar
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-secondary" (click)="ClearFilter()">
+                                    Limpar filtro
+                                </button>
+                            </div>
+                        </div> 
+                    </div>
+                    
+
+
+                    <div class="col-1 ">
+                        <button type="button" class="btn btn-success " data-bs-toggle="modal"
+                            data-bs-target="#AddContact">
+                            Add
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="row mt-2 pl-5">
+
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Empresa</th>
+                                    <th>Email</th>
+                                    <th>Tel. Pessoal</th>
+                                    <th>Tel. Empresa</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let contact of contact">
+                                    <td>{{ contact.name }}</td>
+                                    <td>{{ contact.company }}</td>
+                                    <td>{{ contact.email }}</td>
+                                    <td>{{ contact.personalPhone}}</td>
+                                    <td>{{ contact.businessPhone}}</td>
+                                    <td>
+
+
+                                        <button type="button" class="btn btn-warning mx-2" data-bs-toggle="modal"
+                                            data-bs-target="#UpContact" (click)="ID(contact)"
+                                            style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">
+                                            Editar
+                                        </button>
+
+                                        <button type="button" (click)="Delete(contact)" class="btn btn-danger mx-2"
+                                            style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">
+                                            Excluir
+                                        </button>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Start Modal Add Contact -->
+    <div class="modal fade modal-dialog-scrollable" id="AddContact" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar Contato</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form [formGroup]="form" (ngSubmit)="AddContact()">
+
+                        <div class="row mt-4">
+
+                            <div class="col-9">
+                                <label for="name" class="form-label">Nome Completo*:</label>
+                                <input type="text" class="form-control" formControlName="name" id="name"
+                                    autocomplete="off">
+
+                                <div class="alert alert-danger"
+                                    [hidden]="form.get('name')?.valid || form.get('name')?.pristine">
+                                    <p *ngIf="form.get('name')?.errors?.['required']">O nome
+                                        é
+                                        Obrigatório!</p>
+                                    <p *ngIf="form.get('name')?.errors?.['maxlength']">
+                                        Maximo
+                                        100 caracteres!</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <div class="col-9">
+                                <label for="company" class="form-label">Empresa:</label>
+                                <input type="text" class="form-control" formControlName="company" id="company"
+                                    autocomplete="off">
+
+                                <div class="alert alert-danger"
+                                    [hidden]="form.get('company')?.valid || form.get('company')?.pristine">
+                                    <p *ngIf="form.get('company')?.errors?.['maxlength']">
+                                        Maximo
+                                        50 caracteres!</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <div class="col-9">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" formControlName="email" id="email"
+                                    autocomplete="off">
+
+                                <div class="alert alert-danger"
+                                    [hidden]="form.get('email')?.valid || form.get('email')?.pristine">
+                                    <p *ngIf="form.get('email')?.errors?.['maxlength']">
+                                        Maximo
+                                        50 caracteres!</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <div class="col-9">
+                                <label for="personalPhone" class="form-label">Telefone Pessoal:</label>
+                                <input type="text" class="form-control" formControlName="personalPhone"
+                                    id="personalPhone" autocomplete="off">
+
+                                <div class="alert alert-danger"
+                                    [hidden]="form.get('personalPhone')?.valid || form.get('personalPhone')?.pristine">
+                                    <p *ngIf="form.get('personalPhone')?.errors?.['maxlength']">
+                                        Maximo
+                                        11 caracteres!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <div class="col-9">
+                                <label for="businessPhone" class="form-label">Telefone Empresa:</label>
+                                <input type="text" class="form-control" formControlName="businessPhone"
+                                    id="businessPhone" autocomplete="off">
+
+                                <div class="alert alert-danger"
+                                    [hidden]="form.get('businessPhone')?.valid || form.get('businessPhone')?.pristine">
+                                    <p *ngIf="form.get('businessPhone')?.errors?.['maxlength']">
+                                        Maximo
+                                        11 caracteres!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success" (click)="AddContact()">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Finsh Modal Add Contact -->
+
+
+
+    <!-- Start Modal Update Contact -->
+    <div class="modal fade modal-dialog-scrollable" id="UpContact" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Contato</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form [formGroup]="formUp" (ngSubmit)="UpdateContact()">
+
+                        <div class="row mt-4">
+
+                            <div class="col-9">
+                                <label for="name" class="form-label">Nome Completo*:</label>
+                                <input type="text" class="form-control" formControlName="name" id="name"
+                                    autocomplete="off">
+
+                                <div class="alert alert-danger"
+                                    [hidden]="formUp.get('name')?.valid || formUp.get('name')?.pristine">
+                                    <p *ngIf="formUp.get('name')?.errors?.['required']">O nome
+                                        é
+                                        Obrigatório!</p>
+                                    <p *ngIf="formUp.get('name')?.errors?.['maxlength']">
+                                        Maximo
+                                        100 caracteres!</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <div class="col-9">
+                                <label for="company" class="form-label">Empresa:</label>
+                                <input type="text" class="form-control" formControlName="company" id="company"
+                                    autocomplete="off">
+
+                                <div class="alert alert-danger"
+                                    [hidden]="formUp.get('company')?.valid || formUp.get('company')?.pristine">
+                                    <p *ngIf="formUp.get('company')?.errors?.['maxlength']">
+                                        Maximo
+                                        50 caracteres!</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <div class="col-9">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" formControlName="email" id="email"
+                                    autocomplete="off">
+
+                                <div class="alert alert-danger"
+                                    [hidden]="formUp.get('email')?.valid || formUp.get('email')?.pristine">
+                                    <p *ngIf="formUp.get('email')?.errors?.['maxlength']">
+                                        Maximo
+                                        50 caracteres!</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <div class="col-9">
+                                <label for="personalPhone" class="form-label">Telefone Pessoal:</label>
+                                <input type="text" class="form-control" formControlName="personalPhone"
+                                    id="personalPhone" autocomplete="off">
+                                <div class="alert alert-danger"
+                                    [hidden]="formUp.get('personalPhone')?.valid || formUp.get('personalPhone')?.pristine">
+                                    <p *ngIf="formUp.get('personalPhone')?.errors?.['maxlength']">
+                                        Maximo
+                                        11 caracteres!</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <div class="col-9">
+                                <label for="businessPhone" class="form-label">Telefone Empresa:</label>
+                                <input type="text" class="form-control" formControlName="businessPhone"
+                                    id="businessPhone" autocomplete="off">
+                                <div class="alert alert-danger"
+                                    [hidden]="formUp.get('businessPhone')?.valid || formUp.get('businessPhone')?.pristine">
+                                    <p *ngIf="formUp.get('businessPhone')?.errors?.['maxlength']">
+                                        Maximo
+                                        11 caracteres!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" (click)="UpdateContact()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Finsh Modal Update Contact -->
+
+</div>
